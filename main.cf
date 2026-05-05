@@ -1,0 +1,31 @@
+# Listen on all interfaces
+inet_interfaces = all
+inet_protocols = ipv4
+
+# Identity (adjust as needed)
+myhostname = localhost
+mydomain = localdomain
+myorigin = $mydomain
+
+# Do not deliver locally
+mydestination =
+
+#set logging to stdout so the you can see the logs from the container runtime
+maillog_file = /dev/stdout
+compatibility_level = 2
+
+# Relay everything through Microsoft 365
+relayhost = [mail-teneant.mail.protection.outlook.com]:25
+
+# -----------------------------
+# Access control (equivalent to allowed_hosts table)
+# -----------------------------
+smtpd_client_restrictions =
+    check_client_access hash:/etc/postfix/allowed_hosts,
+    reject
+
+# -----------------------------
+# Accept mail only from allowed hosts
+# -----------------------------
+smtpd_recipient_restrictions =
+    reject_unauth_destination
