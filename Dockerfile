@@ -1,14 +1,15 @@
 # Final image
-FROM registry.access.redhat.com/ubi9/ubi
+FROM registry.access.redhat.com/ubi10/ubi
 
 # Install Postfix and dependencies (no EPEL needed)
 RUN dnf install -y \
         postfix \
+        postfix-lmdb \
         ca-certificates \
     && dnf clean all
 
 # Create directories
-RUN mkdir -p /var/spool/postfix /var/log/postfix /etc/supervisord.d/
+RUN mkdir -p /var/spool/postfix /var/log/postfix
 
 # Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh
