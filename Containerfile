@@ -1,5 +1,5 @@
 # Final image
-FROM registry.access.redhat.com/ubi10/ubi
+FROM registry.access.redhat.com/ubi10/ubi-init
 
 # Install Postfix and dependencies (no EPEL needed)
 RUN dnf install -y \
@@ -18,4 +18,4 @@ RUN chmod +x /entrypoint.sh
 # Expose SMTP + UI ports
 EXPOSE 25 587 465 8080
 
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]

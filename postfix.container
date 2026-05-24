@@ -1,0 +1,29 @@
+[Unit]
+Description=Postfix Mail Transfer Agent
+After=network-online.target
+
+
+[Container]
+Image=ghcr.io/cody-chapman/postfix:latest
+ContainerName=postfix
+AutoUpdate=image
+
+# Environment Settings
+Environment=TZ=America/Chicago
+
+# Port Mappings
+PublishPort=25:25
+PublishPort=465:465
+PublishPort=587:587
+
+# Mount configurations using absolute paths. 
+# Replace '/etc/postfix/config' with the actual path where you store your configuration files.
+Volume=/etc/postfix/config/main.cf:/etc/postfix/main.cf:Z
+Volume=/etc/postfix/config/allowed_hosts:/etc/postfix/allowed_hosts:Z
+
+[Service]
+Restart=always
+
+
+[Install]
+WantedBy=multi-user.target

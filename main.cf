@@ -9,9 +9,10 @@ myorigin = $mydomain
 
 # Do not deliver locally
 mydestination =
+default_database_type = lmdb
 
 #set logging to stdout so the you can see the logs from the container runtime
-maillog_file = /dev/stdout
+#maillog_file = /dev/stdout
 compatibility_level=3.6
 
 # Relay everything through Microsoft 365
@@ -21,7 +22,7 @@ relayhost = [vnatoday-org.mail.protection.outlook.com]:25
 # Access control (equivalent to allowed_hosts table)
 # -----------------------------
 smtpd_client_restrictions =
-    check_client_access lmdb:/etc/postfix/allowed_hosts,
+    check_client_access lmdb:/etc/postfix/allowed_hosts.lmdb,
     reject
 
 # -----------------------------
