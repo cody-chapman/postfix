@@ -13,9 +13,6 @@ if [ -n "${TZ:-}" ]; then
   echo "Timezone set to $TZ"
 fi
 
-chown root:root /etc/postfix/main.cf /etc/postfix/allowed_hosts
-chmod 644 /etc/postfix/main.cf /etc/postfix/allowed_hosts
-
 # ----------------------------
 # Environment export (optional for cron/tools)
 # ----------------------------
@@ -26,6 +23,53 @@ printenv > /etc/environment
 # ----------------------------
 mkdir -p /var/spool/postfix /var/log/postfix
 
+# Fallback defaults if variables are not passed to the container
+MYHOSTNAME="${MYHOSTNAME:-vnatoday.org}"
+MYNETWORKS="${MYNETWORKS:-192.168.0.0/24 172.16.0.0/24}"
+RELAYHOST="${RELAYHOST:-[://outlook.com]:25}"
+
+echo "--> Generating main.cf dynamically via EOF..."
+
+# Overwrite /etc/postfix/main.cf dynamically
+cat << EOF > /etc/postfix/main.cf
+# Listen on all interfaces
+inet_interfaces = all
+inet_protocols = ipv4
+
+# Identity
+myhostname = ${MYHOSTNAME}
+mydomain = vnatoday.org
+myorigin = \$mydomain
+
+smtpd_banner = \$myhostname ESMTP \$mail_name
+
+# Do not deliver locally
+mydestination =
+
+# Trusted Networks
+mynetworks = ${MYNETWORKS}
+
+# Container Logging Standard
+maillog_file = stdout
+compatibility_level = 3.6
+
+# Relay Everything Through Microsoft 365
+relayhost = ${RELAYHOST}
+
+# SMTP Server Restrictions
+smtpd_relay_restrictions = 
+    permit_mynetworks, 
+    reject_unauth_destination
+
+smtpd_recipient_restrictions = 
+    permit_mynetworks, 
+    reject_unauth_destination
+EOF
+
+echo "--> Configuration file created successfully."
+
+chown root:root /etc/postfix/main.cf
+
 # ----------------------------
 # Validate configuration
 # ----------------------------
@@ -35,11 +79,8 @@ postfix check || {
   exit 1
 }
 
-# ----------------------------
-# Validate configuration
-# ----------------------------
-echo Hashing the allowed ip relay list
-postmap /etc/postfix/allowed_hosts
+echo "--> Starting Postfix daemon in foreground..."
 
-echo Starting postfix
-exec /usr/sbin/postfix start-fg
+# Start Postfix in foreground so the container stays alive
+exec postfix start-foreground
+
