@@ -6,7 +6,7 @@ After=network-online.target
 [Container]
 Image=ghcr.io/cody-chapman/postfix:latest
 ContainerName=postfix
-AutoUpdate=image
+AutoUpdate=registry
 
 # Environment Settings
 Environment=TZ=America/Chicago
@@ -15,11 +15,6 @@ Environment=RELAY_HOST="vnatoday-org.mail.protection.outlook.com"
 
 # Port Mappings
 PublishPort=25:25
-
-# Mount configurations using absolute paths. 
-# Replace '/etc/postfix/config' with the actual path where you store your configuration files.
-Volume=%h/postfix/config/main.cf:/etc/postfix/main.cf:Z
-Volume=%h/postfix/config/allowed_hosts:/etc/postfix/allowed_hosts:Z
 
 [Service]
 Restart=always
