@@ -18,4 +18,4 @@ RUN chmod +x /entrypoint.sh
 # Expose SMTP + UI ports
 EXPOSE 25
 
-# ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
