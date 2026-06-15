@@ -3,7 +3,7 @@ inet_interfaces = all
 inet_protocols = ipv4
 
 # Identity (adjust as needed)
-myhostname = ://vnatoday.org
+myhostname = vnatoday.org
 mydomain = vnatoday.org
 myorigin = $mydomain
 
