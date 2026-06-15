@@ -10,11 +10,11 @@ AutoUpdate=image
 
 # Environment Settings
 Environment=TZ=America/Chicago
+Environment=ALLOWED_NETWORKS="192.168.0.0/24 172.16.0.0/24"
+Environment=RELAY_HOST=""
 
 # Port Mappings
 PublishPort=25:25
-PublishPort=465:465
-PublishPort=587:587
 
 # Mount configurations using absolute paths. 
 # Replace '/etc/postfix/config' with the actual path where you store your configuration files.
