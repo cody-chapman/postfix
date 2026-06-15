@@ -40,3 +40,6 @@ postfix check || {
 # ----------------------------
 echo Hashing the allowed ip relay list
 postmap /etc/postfix/allowed_hosts
+
+echo Starting postfix
+exec /usr/sbin/postfix start-fg
