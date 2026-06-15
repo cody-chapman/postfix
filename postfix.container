@@ -10,8 +10,9 @@ AutoUpdate=registry
 
 # Environment Settings
 Environment=TZ=America/Chicago
-Environment=ALLOWED_NETWORKS="192.168.0.0/24 172.16.0.0/24"
-Environment=RELAY_HOST="vnatoday-org.mail.protection.outlook.com"
+Environment=MYNETWORKS="192.168.0.0/24 172.16.0.0/24"
+Environment=RELAYHOST="vnatoday-org.mail.protection.outlook.com"
+Environment=MYHOSTNAME=vnatoday.org"
 
 # Port Mappings
 PublishPort=25:25
