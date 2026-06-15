@@ -3,13 +3,16 @@ inet_interfaces = all
 inet_protocols = ipv4
 
 # Identity (adjust as needed)
-myhostname = localhost
-mydomain = localdomain
+myhostname = ://vnatoday.org
+mydomain = vnatoday.org
 myorigin = $mydomain
+
+smtpd_banner = $myhostname ESMTP $mail_name
 
 # Do not deliver locally
 mydestination =
-default_database_type = lmdb
+
+mynetworks = 192.168.0.0/24 172.16.0.0/24
 
 #set logging to stdout so the you can see the logs from the container runtime
 #maillog_file = /dev/stdout
@@ -18,15 +21,11 @@ compatibility_level=3.6
 # Relay everything through Microsoft 365
 relayhost = [vnatoday-org.mail.protection.outlook.com]:25
 
-# -----------------------------
-# Access control (equivalent to allowed_hosts table)
-# -----------------------------
-smtpd_client_restrictions =
-    check_client_access lmdb:/etc/postfix/allowed_hosts.lmdb,
-    reject
+# SMTP Server Restrictions
+smtpd_relay_restrictions = 
+    permit_mynetworks, 
+    reject_unauth_destination
 
-# -----------------------------
-# Accept mail only from allowed hosts
-# -----------------------------
-smtpd_recipient_restrictions =
+smtpd_recipient_restrictions = 
+    permit_mynetworks, 
     reject_unauth_destination
