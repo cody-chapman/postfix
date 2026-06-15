@@ -38,7 +38,7 @@ inet_protocols = ipv4
 
 # Identity
 myhostname = ${MYHOSTNAME}
-mydomain = vnatoday.org
+mydomain = ${MYHOSTNAME}
 myorigin = \$mydomain
 
 smtpd_banner = \$myhostname ESMTP \$mail_name
