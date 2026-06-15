@@ -50,7 +50,7 @@ mydestination =
 mynetworks = ${MYNETWORKS}
 
 # Container Logging Standard
-maillog_file = stdout
+maillog_file = /dev/stdout
 compatibility_level = 3.6
 
 # Relay Everything Through Microsoft 365
@@ -82,5 +82,5 @@ postfix check || {
 echo "--> Starting Postfix daemon in foreground..."
 
 # Start Postfix in foreground so the container stays alive
-exec postfix start-foreground
+exec /usr/sbin/postfix start-fg
 
