@@ -10,12 +10,12 @@ AutoUpdate=registry
 
 # Environment Settings
 Environment=TZ=America/Chicago
-Environment=MYNETWORKS="192.168.0.0/24 172.16.0.0/24"
+Environment=MYNETWORKS="192.168.0.0/24 172.16.0.0/24 10.88.0.0/24"
 Environment=RELAYHOST="vnatoday-org.mail.protection.outlook.com"
 Environment=MYHOSTNAME=vnatoday.org"
 
 # Health check configuration
-HealthCmd=postfix status || exit 1
+HealthCmd=test -f /var/spool/postfix/pid/master.pid
 HealthInterval=30s
 HealthTimeout=10s
 HealthRetries=3
