@@ -1,6 +1,6 @@
 # Final image
-FROM registry.access.redhat.com/ubi10/ubi
-
+#FROM registry.access.redhat.com/ubi10/ubi
+FROM rockylinux/rockylinux:10-ubi
 # Install Postfix and dependencies (no EPEL needed)
 RUN dnf install -y \
         postfix \

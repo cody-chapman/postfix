@@ -24,9 +24,9 @@ printenv > /etc/environment
 mkdir -p /var/spool/postfix /var/log/postfix
 
 # Fallback defaults if variables are not passed to the container
-MYHOSTNAME="${MYHOSTNAME:-vnatoday.org}"
+MYHOSTNAME="${MYHOSTNAME:-westgate.bank}"
 MYNETWORKS="${MYNETWORKS:-10.0.0.0/8}"
-RELAYHOST="${RELAYHOST:-[vnatoday-org.mail.protection.outlook.com]:25}"
+RELAYHOST="${RELAYHOST:-[westgate-bank.mail.protection.outlook.com]:25}"
 
 # Overwrite /etc/postfix/main.cf dynamically
 cat << EOF > /etc/postfix/main.cf
@@ -60,25 +60,23 @@ relayhost = ${RELAYHOST}
 # SMTP Server header check hardening
 header_checks = pcre:/etc/postfix/header_checks
 
-# SMTP Server Restrictions (Enforce sender validation first)
-smtpd_sender_restrictions =
-    check_sender_access regexp:/etc/postfix/sender_access,
-    reject_non_fqdn_sender
-
-smtpd_relay_restrictions =
-    permit_mynetworks,
+# SMTP Server Restrictions
+smtpd_relay_restrictions = 
+    permit_mynetworks, 
     reject_unauth_destination
 
-smtpd_recipient_restrictions =
-    permit_mynetworks,
-    reject_unauth_destination,
-    reject
+smtpd_recipient_restrictions = 
+    permit_mynetworks, 
+    reject_unauth_destination
 
 # Set TLS up for connectivity
 smtpd_tls_security_level = may
 smtpd_tls_cert_file = /etc/ssl/certs/postfix.pem
 smtpd_tls_key_file = /etc/ssl/private/postfix.key
 smtp_tls_security_level = encrypt
+# Following 2 settings are deprecated
+#smtp_enforce_tls = yes
+#smtp_use_tls = yes
 smtp_tls_loglevel = 1
 
 # Increase max size of emails and mailbox
@@ -109,17 +107,6 @@ EOF
 echo "--> Configuration file [header_checks] created successfully."
 
 chown root:root /etc/postfix/header_checks
-
-
-# Escape periods in MYHOSTNAME for the regular expression (e.g., westgate.bank -> westgate\.bank)
-ESCAPED_MYHOSTNAME="${MYHOSTNAME//./\\.}"
-
-# Generate sender_access dynamically
-printf '/^.+@(.*\\.)?%s$/\tOK\n/./\tREJECT Unauthorized sender domain\n' "$ESCAPED_MYHOSTNAME" > /etc/postfix/sender_access
-
-echo "--> Configuration file [sender_access] created successfully."
-
-chown root:root /etc/postfix/sender_access
 
 # Fixing issue with RHEL 10 default for lmdb vs hash
 postconf -e "alias_maps = lmdb:/etc/aliases"
