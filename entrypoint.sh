@@ -75,7 +75,7 @@ smtpd_recipient_restrictions =
     reject
 
 # Set TLS up for connectivity
-smtpd_tls_security_level = may
+smtpd_tls_security_level = none
 smtpd_tls_cert_file = /etc/ssl/certs/postfix.pem
 smtpd_tls_key_file = /etc/ssl/private/postfix.key
 smtp_tls_security_level = encrypt
