@@ -84,6 +84,14 @@ smtp_tls_loglevel = 1
 # Increase max size of emails and mailbox
 message_size_limit = 52428800
 mailbox_size_limit = 104857600
+
+# Base retry interval (default 300s / 5m)
+minimal_backoff_time = 300s
+maximal_backoff_time = 300s
+
+# Drop messages after 20 minutes (~4 to 5 retry cycles)
+maximal_queue_lifetime = 20m
+bounce_queue_lifetime = 0d
 EOF
 
 echo "--> Configuration file [main.cf] created successfully."
