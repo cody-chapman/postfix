@@ -14,6 +14,9 @@ Environment=MYNETWORKS="192.168.0.0/24 172.16.0.0/24 10.88.0.0/24"
 Environment=RELAYHOST="vnatoday-org.mail.protection.outlook.com"
 Environment=MYHOSTNAME=vnatoday.org"
 
+# Logging Configuration
+LogDriver=journald
+
 # Health check configuration
 HealthCmd=test -f /var/spool/postfix/pid/master.pid
 HealthInterval=30s
